@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .wrong-message {
+            padding: 20px;
+        }
+
+        .wrong-message h2 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .wrong-message p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .meme-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            background: #666;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            background: #555;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❌ Access Denied</h1>
+        <div class="wrong-message" id="wrongMessage"></div>
+        <a href="/" class="back-btn">Try Again</a>
+    </div>
+
+    <script>
+        const wrongMessages = [
+            {
+                title: '🕵️ Nothing to See Here',
+                message: 'Move along, citizen. These aren\'t the codes you\'re looking for.',
+                img: 'https://i.imgflip.com/4/3oevdk.jpg'
+            },
+            {
+                title: '🚫 Error 404',
+                message: 'Code not found. Did you try turning it off and on again?',
+                img: ''
+            },
+            {
+                title: '🤔 Hmm...',
+                message: 'That code is as real as my girlfriend. (I don\'t have a girlfriend)',
+                img: ''
+            },
+            {
+                title: '🎯 So Close!',
+                message: 'Just kidding. You weren\'t even close. Not even a little bit.',
+                img: ''
+            },
+            {
+                title: '🎲 Better Luck Next Time',
+                message: 'Maybe try smashing your keyboard? That\'s how most passwords are made anyway.',
+                img: ''
+            }
+        ];
+
+        // Pick a random message
+        const randomMsg = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
+        
+        let content = `<h2>${randomMsg.title}</h2><p>${randomMsg.message}</p>`;
+        if (randomMsg.img) {
+            content += `<img src="${randomMsg.img}" class="meme-img" alt="Nothing to see here">`;
+        }
+        
+        document.getElementById('wrongMessage').innerHTML = content;
+    </script>
+</body>
+</html>
