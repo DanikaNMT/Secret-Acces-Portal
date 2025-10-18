@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nog Een Cadeau!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            position: fixed;
+            font-size: 20px;
+            animation: sparkle-float 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle-float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-80vh) rotate(180deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: slideIn 0.8s;
+            position: relative;
+            z-index: 10;
+            border: 4px solid #a8edea;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .emoji-big {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            color: #00bcd4;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #555;
+            line-height: 1.8;
+            margin: 30px 0;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%);
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+        }
+
+        .present-box {
+            font-size: 8em;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: inline-block;
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .present-box:hover {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        .celebration {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .instruction-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .instruction-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .instruction-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .location-code {
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid white;
+            padding: 15px 25px;
+            margin: 15px 0;
+            border-radius: 15px;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 5px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .surprise-text {
+            font-size: 1.2em;
+            color: #00bcd4;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px #00bcd4; }
+            50% { text-shadow: 0 0 20px #00bcd4, 0 0 30px #4dd0e1; }
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            background: #00bcd4;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 188, 212, 0.6);
+            background: #0097a7;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .emoji-big {
+                font-size: 4em;
+            }
+
+            .message {
+                font-size: 1.1em;
+            }
+
+            .present-box {
+                font-size: 6em;
+            }
+
+            .location-code {
+                font-size: 1.5em;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji-big">🎁</div>
+        
+        <h1>Wauw, Goe bezig!</h1>
+        
+        <div class="celebration">✨ 🌟 💫 ⭐ ✨</div>
+        
+        <div class="message">
+            Er wacht nog een cadeau op je! 🎊 <br><br>
+            Je mag cadeau 2 nu openen! Veel plezier! 🎉
+        </div>
+
+        <div class="instruction-box">
+            <div class="instruction-title">📍 Volgende Stap</div>
+            <div class="instruction-text">
+                Zoek deze locatie op en zet daar je kaars:
+            </div>
+            <div class="location-code">B3</div>
+            <div class="instruction-text">
+                Haast je! Je cadeau wacht op je! 🏃‍♂️💨
+            </div>
+        </div>
+
+        <a href="index.html" class="back-btn">Terug naar Start</a>
+    </div>
+
+    <script>
+        // Create sparkles
+        function createSparkles() {
+            const sparkleEmojis = ['✨', '⭐', '💫', '🌟', '✨'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.animationDelay = Math.random() * 2 + 's';
+                    sparkle.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 6000);
+                }, i * 50);
+            }
+        }
+
+        // Start sparkles on page load
+        window.onload = createSparkles;
+
+        // Present box click effect
+        document.querySelector('.present-box').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'wiggle 3s ease-in-out infinite';
+            }, 10);
+            createSparkles();
+        });
+    </script>
+</body>
+</html>

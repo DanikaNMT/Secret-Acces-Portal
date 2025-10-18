@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Message</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1em;
+        }
+
+        .play-button-container {
+            margin: 40px 0;
+        }
+
+        .play-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.7);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .play-button.playing {
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .wine-display {
+            background: #2c3e50;
+            border-radius: 15px;
+            margin: 30px 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wine-emoji {
+            font-size: 8em;
+            opacity: 0;
+            transition: opacity 0.1s;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0));
+        }
+
+        .wine-emoji.flash {
+            opacity: 1;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+        }
+
+        .hint {
+            background: #e7f3ff;
+            border: 2px solid #2196F3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #0d47a1;
+        }
+
+        .hint-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .hint-text {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .status-text {
+            font-size: 1.1em;
+            color: #666;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            background: #666;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            background: #555;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .play-button {
+                width: 120px;
+                height: 120px;
+                font-size: 3em;
+            }
+
+            .wine-display {
+                min-height: 150px;
+            }
+
+            .wine-emoji {
+                font-size: 6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="play-button-container">
+            <button class="play-button" id="playBtn" onclick="playMorse()">
+                ▶️
+            </button>
+        </div>
+
+        <div class="status-text" id="status"></div>
+
+        <div class="wine-display">
+            <div class="wine-emoji" id="wineEmoji">🍷</div>
+        </div>
+
+        <a href="index.html" class="back-btn">Terug naar Start</a>
+    </div>
+
+    <script>
+        // Morse code: –·–· ···––
+        const morsePattern = [
+            { type: 'dash' },   // –
+            { type: 'dot' },    // ·
+            { type: 'dash' },   // –
+            { type: 'dot' },    // ·
+            { type: 'space' },  // space between letters
+            { type: 'dot' },    // ·
+            { type: 'dot' },    // ·
+            { type: 'dot' },    // ·
+            { type: 'dash' },   // –
+            { type: 'dash' }    // –
+        ];
+
+        const dotDuration = 100;  // milliseconds
+        const dashDuration = 300; // milliseconds
+        const gapDuration = 100;  // gap between symbols
+        const letterGap = 400;    // gap between letters
+
+        // Audio context
+        let audioContext;
+        let isPlaying = false;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(duration) {
+            return new Promise((resolve) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 600; // Hz
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+                
+                setTimeout(resolve, duration);
+            });
+        }
+
+        function flashWine(duration) {
+            const wine = document.getElementById('wineEmoji');
+            wine.classList.add('flash');
+            setTimeout(() => {
+                wine.classList.remove('flash');
+            }, duration);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function playMorse() {
+            if (isPlaying) return;
+            
+            initAudio();
+            isPlaying = true;
+            
+            const btn = document.getElementById('playBtn');
+            const status = document.getElementById('status');
+            
+            btn.classList.add('playing');
+            btn.textContent = '⏸️';
+            status.textContent = 'Let op! Noteer de code...';
+            
+            // Play the morse code pattern
+            for (let i = 0; i < morsePattern.length; i++) {
+                const signal = morsePattern[i];
+                
+                if (signal.type === 'dash') {
+                    // Dash - long beep and flash
+                    flashWine(dashDuration);
+                    await playTone(dashDuration);
+                    await sleep(gapDuration);
+                } else if (signal.type === 'dot') {
+                    // Dot - short beep and flash
+                    flashWine(dotDuration);
+                    await playTone(dotDuration);
+                    await sleep(gapDuration);
+                } else if (signal.type === 'space') {
+                    // Space between letters
+                    await sleep(letterGap);
+                }
+            }
+            
+            // Reset button
+            btn.classList.remove('playing');
+            btn.textContent = '▶️';
+            status.textContent = 'Klaar! Heb je de code genoteerd? Druk opnieuw om nog eens te luisteren.';
+            isPlaying = false;
+        }
+    </script>
+</body>
+</html>
