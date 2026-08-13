@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>voor Kenny</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum: #221221;
+    --burgundy: #3d1f34;
+    --gold: #e3ab55;
+    --peach: #f0a583;
+    --cream: #fbf3e7;
+    --muted: #c6a3bd;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: radial-gradient(ellipse at top, var(--burgundy) 0%, var(--plum) 65%);
+    color: var(--cream);
+    font-family:'Work Sans', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* floating hearts */
+  .hearts{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .heart{
+    position:absolute; bottom:-40px; opacity:0.5;
+    font-size: 18px; color: var(--peach);
+    animation: float linear infinite;
+  }
+  @keyframes float{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0;}
+    10%{opacity:0.6;}
+    90%{opacity:0.4;}
+    100%{ transform: translateY(-110vh) translateX(20px) rotate(25deg); opacity:0;}
+  }
+
+  main{position:relative; z-index:1; max-width:720px; margin:0 auto; padding: 0 24px 140px;}
+
+  /* HERO */
+  .hero{
+    min-height:92vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    gap:18px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.28em; text-transform:uppercase;
+    font-size:11px; color: var(--muted);
+  }
+  .hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size: clamp(48px, 11vw, 92px);
+    line-height:0.95;
+    color: var(--cream);
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:400; color: var(--gold);
+  }
+  .hero p{
+    max-width:420px;
+    color: var(--muted);
+    font-size:16px;
+    line-height:1.6;
+  }
+  .heartbeat{
+    width:14px; height:14px; border-radius:50%;
+    background: var(--gold);
+    animation: pulse 1.15s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(227,171,85,0.5);}
+    50%{ transform:scale(1.35); box-shadow:0 0 0 10px rgba(227,171,85,0);}
+  }
+  .scroll-hint{
+    margin-top:28px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--muted); letter-spacing:0.1em;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+
+  /* SECTION generic */
+  section{ padding: 90px 0; }
+  .label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.24em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:14px; display:block;
+  }
+  h2{
+    font-family:'Fraunces', serif; font-weight:600;
+    font-size: clamp(28px, 6vw, 42px);
+    margin-bottom: 28px;
+    color: var(--cream);
+  }
+
+  /* reasons list */
+  .reasons{ list-style:none; display:flex; flex-direction:column; }
+  .reasons li{
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(230,200,220,0.14);
+    display:flex; gap:20px; align-items:baseline;
+    font-size: 17px; line-height:1.55; color: var(--cream);
+  }
+  .reasons li:last-child{ border-bottom:none; }
+  .num{
+    font-family:'JetBrains Mono', monospace;
+    color: var(--peach); font-size:13px; flex-shrink:0; padding-top:2px;
+  }
+
+  /* quote / letter block */
+  .letter{
+    background: rgba(251,243,231,0.04);
+    border: 1px solid rgba(230,200,220,0.16);
+    border-radius: 4px;
+    padding: 44px 36px;
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(19px, 3.2vw, 24px);
+    line-height:1.65;
+    color: var(--cream);
+    position:relative;
+  }
+  .letter::before{
+    content:"“"; position:absolute; top:-6px; left:20px;
+    font-family:'Fraunces', serif; font-size:64px; color: var(--gold); opacity:0.5;
+  }
+  .sign{
+    display:block; margin-top:24px; font-style:normal;
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted); letter-spacing:0.08em;
+  }
+
+  /* closing */
+  .closing{ text-align:center; padding-top:60px; }
+  .closing h2{ margin-bottom:12px; }
+  .closing p{ color:var(--muted); font-size:15px; }
+
+  /* easter egg trigger — small, unlabeled, part of the scenery */
+  .egg-trigger{
+    position:fixed;
+    bottom: 22px; right: 22px;
+    width: 34px; height:34px;
+    cursor:pointer;
+    z-index: 5;
+    opacity:0.55;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .egg-trigger:hover{ opacity:1; transform: scale(1.12) rotate(-4deg); }
+  .egg-trigger svg{ width:100%; height:100%; display:block; }
+
+  /* overlay */
+  .overlay{
+    position:fixed; inset:0; z-index:20;
+    background: rgba(15,8,15,0.92);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition: opacity 0.35s ease;
+    padding: 24px;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+  .egg-card{
+    text-align:center;
+    max-width: 360px;
+    transform: translateY(14px);
+    transition: transform 0.35s ease;
+  }
+  .overlay.show .egg-card{ transform: translateY(0); }
+  .egg-card .hood{
+    width:120px; margin: 0 auto 22px;
+    animation: wobble 0.6s ease;
+  }
+  @keyframes wobble{
+    0%{ transform: scale(0.6) rotate(0deg); opacity:0;}
+    60%{ transform: scale(1.08) rotate(4deg); opacity:1;}
+    100%{ transform: scale(1) rotate(0deg);}
+  }
+  .egg-card h3{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    color: var(--gold); font-size:22px; margin-bottom:10px;
+  }
+  .egg-card p{ color: var(--cream); font-size:14px; line-height:1.6; margin-bottom:6px;}
+  .egg-card .translation{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); margin-top:16px;
+  }
+  .egg-close{
+    margin-top: 26px;
+    background:none; border:1px solid var(--muted); color:var(--cream);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    padding: 10px 20px; border-radius:2px; cursor:pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .egg-close:hover{ background: rgba(227,171,85,0.12); border-color: var(--gold); }
+
+  @media (max-width:520px){
+    section{ padding: 64px 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<main>
+  <section class="hero">
+    <span class="heartbeat"></span>
+    <span class="eyebrow">een klein websiteje, alleen voor jou</span>
+    <h1>Voor <em>Kenny</em></h1>
+    <p>Niets belangrijks hier. Gewoon een paar dingen die ik al even hardop wilde zeggen.</p>
+    <span class="scroll-hint">scroll ↓</span>
+  </section>
+
+  <section>
+    <span class="label">Redenen, een onvolledige lijst</span>
+    <h2>Waarom jij</h2>
+    <ul class="reasons">
+      <li><span class="num">01</span><span>Hoe je het (veel te) leuk vindt om mij te rage baiten.</span></li>
+      <li><span class="num">02</span><span>Hoe rustig en stabiel je bent, zelfs op dagen dat ik dat niet ben.</span></li>
+      <li><span class="num">03</span><span>Je onthoudt de kleine dingen die ik terloops noem, weken later nog.</span></li>
+      <li><span class="num">04</span><span>Bij jou voelen gewone en moeilijke dagen ineens de moeite waard.</span></li>
+      <li><span class="num">05</span><span>Ik vind het gewoon heel fijn om bij jou te zijn. Meer is het niet. Dat is de hele reden.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="label">Voor het geval het nog gezegd moest worden</span>
+    <div class="letter">
+      Ik hou van jou. Niet op een grote dramatische manier, maar op die rustige, dagelijkse manier van ik-moest-aan-jou-denken-toen-ik-dit-zag. Jij maakt mijn leven beter, gewoon door er te zijn.
+      <span class="sign">— voor altijd, ik</span>
+    </div>
+  </section>
+
+  <section class="closing">
+    <span class="label">Dat was het</span>
+    <h2>Kom me straks maar zoeken.</h2>
+    <p>Ik ben degene die zonder reden naar haar telefoon zit te glimlachen.</p>
+  </section>
+</main>
+
+<!-- quiet corner easter egg -->
+<div class="egg-trigger" id="eggTrigger" title="">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" fill="#d9622f"/>
+    <ellipse cx="50" cy="55" rx="26" ry="22" fill="#e8b892"/>
+    <path d="M50 6 C25 6 10 26 10 52 C10 74 26 94 50 94 C74 94 90 74 90 52 C90 26 75 6 50 6 Z M50 16 C68 16 80 32 80 52 C80 68 68 84 50 84 C32 84 20 68 20 52 C20 32 32 16 50 16 Z" fill="#a8431d"/>
+    <circle cx="38" cy="52" r="4.5" fill="#221221"/>
+    <circle cx="62" cy="52" r="4.5" fill="#221221"/>
+    <path d="M42 66 Q50 71 58 66" stroke="#a8431d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="egg-card">
+    <div class="hood">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#d9622f"/>
+        <ellipse cx="50" cy="55" rx="26" ry="22" fill="#e8b892"/>
+        <path d="M50 6 C25 6 10 26 10 52 C10 74 26 94 50 94 C74 94 90 74 90 52 C90 26 75 6 50 6 Z M50 16 C68 16 80 32 80 52 C80 68 68 84 50 84 C32 84 20 68 20 52 C20 32 32 16 50 16 Z" fill="#a8431d"/>
+        <circle cx="38" cy="52" r="5" fill="#221221"/>
+        <circle cx="62" cy="52" r="5" fill="#221221"/>
+        <path d="M42 67 Q50 72 58 67" stroke="#a8431d" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h3>mmph mmph mmph mmph.</h3>
+    <p>(dat ben jij, blijkbaar, telkens als je die ene hoodie draagt)</p>
+    <p>Vertaling, voor de duidelijkheid: ik hou ook van jou. Sterf alsjeblieft niet voor het eten.</p>
+    <span class="translation">easter egg gevonden — achievement unlocked</span>
+    <br/>
+    <button class="egg-close" id="eggClose">sluiten</button>
+  </div>
+</div>
+
+<script>
+  // floating hearts
+  const heartsEl = document.getElementById('hearts');
+  const symbols = ['♡','❤','♥'];
+  for(let i=0;i<16;i++){
+    const h = document.createElement('span');
+    h.className = 'heart';
+    h.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = (12 + Math.random()*16) + 'px';
+    h.style.animationDuration = (10 + Math.random()*14) + 's';
+    h.style.animationDelay = (Math.random()*14) + 's';
+    heartsEl.appendChild(h);
+  }
+
+  // easter egg
+  const trigger = document.getElementById('eggTrigger');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('eggClose');
+
+  trigger.addEventListener('click', () => overlay.classList.add('show'));
+  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('show'); });
+</script>
+
+</body>
+</html>

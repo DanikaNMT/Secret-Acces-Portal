@@ -1,0 +1,489 @@
+
+Claude finished the response
+
+Onvoldoende informatie om samen te vatten
+Onvoldoende informatie om samen te vatten
+Een los HTML-bestand dat je gewoon opent in de browser, heeft geen server — het kan dus niet zomaar op eigen kracht een mail versturen. Dat vereist altijd een externe dienst met eigen inloggegevens. De meest gangbare oplossing daarvoor is EmailJS: een gratis service waarmee je vanuit puur client-side JavaScript toch echt een mail verstuurt, zonder eigen server te bouwen.
+
+Om dat in te bouwen heb ik van jou nodig:
+
+Een gratis account op emailjs.com
+Een Service ID (gekoppeld aan bijvoorbeeld je Gmail)
+Een Template ID (het mailsjabloon)
+Je Public Key
+Wil je dat ik de pagina zo aanpas dat ze EmailJS gebruikt (dan moet jij die 3 waarden invullen na het aanmaken van je account), of vind je het prima dat de pagina automatisch je mailapp opent met alles al ingevuld zoals nu, zodat jij alleen op verzenden hoeft te drukken?
+
+ik wil met email js zerken welke data heb je nodig en kan je ,e een template geven
+
+Top, dat werkt goed. Hier is wat je nodig hebt en wat je moet aanmaken.
+
+Wat ik van jou nodig heb
+Public Key (Account → General in het EmailJS dashboard)
+Service ID (Email Services → jouw gekoppelde Gmail-service)
+Template ID (van de template die je hieronder aanmaakt)
+Stappen op emailjs.com
+Maak een gratis account.
+Email Services → Add new service → kies Gmail → koppel het account waar de mail vandaan mag komen (login met dat Gmail-account) → noteer de Service ID.
+Email Templates → Create new template. Zet de inhoud zo:
+To email: danikanmt@gmail.com
+Subject:
+
+Ons date-plannetje 💙
+Content:
+
+Er staat een date gepland!
+
+Wat: {{activity}}
+Wanneer: {{datetime}}
+
+Zin om erbij te zijn? Ik in ieder geval wel.
+
+xxx {{sender_name}}
+Sla op en noteer de Template ID.
+
+Account → General → kopieer je Public Key.
+Zodra je die drie waarden hebt (Public Key, Service ID, Template ID), plak ze hier en dan bouw ik ze meteen in de pagina in — dan verstuurt de knop de mail echt zelf, zonder dat jouw vriend zijn mailapp hoeft te openen.
+
+Template ID: template_je6i5sl
+
+Genoteerd: Template ID: template_je6i5sl
+
+Nu nog twee dingen nodig:
+
+Service ID (bij Email Services, de Gmail-koppeling die je hebt aangemaakt)
+Public Key (bij Account → General)
+Zodra ik die twee heb, bouw ik alles in de pagina.
+
+Public Key: iIbT2FJM5N25lJwMs
+Service ID: service_z7c0sjg
+
+
+Ran a command, created a file, read a file
+Ran a command, created a file, read a file
+EmailJS is nu ingebouwd met jouw Public Key, Service ID en Template ID. Als hij op "Stuur ons plannetje" klikt, wordt de mail nu écht automatisch verstuurd naar danikanmt@gmail.com — geen mailapp meer nodig. Zorg wel dat de EmailJS template exact {{activity}}, {{datetime}} en {{sender_name}} gebruikt zoals ik eerder aangaf, anders komen die velden leeg aan.
+
+
+Date night
+Code · HTML 
+
+Want to be notified when Claude responds?
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
+
+Date night · HTML
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wil je met me op date?</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: #E6F1FB;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+  .card {
+    text-align: center;
+    max-width: 460px;
+    width: 100%;
+    padding: 2.5rem 1.5rem;
+  }
+  .emoji {
+    font-size: 44px;
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #042C53;
+    margin: 0 0 0.5rem;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #042C53;
+    margin: 0 0 0.5rem;
+  }
+  p.sub {
+    font-size: 16px;
+    color: #0C447C;
+    margin: 0 0 2rem;
+  }
+  .buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+    height: 200px;
+  }
+  button {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+    font-family: inherit;
+  }
+  #yesBtn {
+    background: #185FA5;
+    color: white;
+    border: none;
+    align-self: flex-start;
+  }
+  #noBtn {
+    background: white;
+    color: #185FA5;
+    border: 1px solid #85B7EB;
+    align-self: flex-start;
+  }
+  #msg {
+    margin-top: 1rem;
+    font-size: 18px;
+    font-weight: 600;
+    color: #042C53;
+    min-height: 24px;
+  }
+ 
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .option-btn {
+    background: white;
+    color: #0C447C;
+    border: 1px solid #85B7EB;
+    border-radius: 14px;
+    padding: 16px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    transform: none;
+  }
+  .option-btn.selected {
+    background: #185FA5;
+    color: white;
+    border-color: #185FA5;
+  }
+  .option-btn .icon {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+ 
+  textarea, input[type="date"], input[type="time"] {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 15px;
+    font-family: inherit;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #85B7EB;
+    background: white;
+    color: #042C53;
+    margin-bottom: 1rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 70px;
+  }
+ 
+  .primary-btn {
+    background: #185FA5;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+  .primary-btn:disabled {
+    background: #B5D4F4;
+    cursor: not-allowed;
+  }
+  .ghost-btn {
+    background: transparent;
+    color: #0C447C;
+    border: none;
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 6px;
+  }
+ 
+  .datetime-row {
+    display: flex;
+    gap: 12px;
+  }
+ 
+  .hidden {
+    display: none;
+  }
+  .error {
+    color: #A32D2D;
+    font-size: 13px;
+    margin: -6px 0 12px;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+ 
+<div class="card" id="card">
+ 
+  <div id="step-ask">
+    <div class="emoji">💙</div>
+    <h1>Wil je met me op date?</h1>
+    <p class="sub">vanavond, gewoon wij twee</p>
+    <div class="buttons" id="buttons">
+      <button id="yesBtn">Ja</button>
+      <button id="noBtn">Nee</button>
+    </div>
+    <p id="msg"></p>
+  </div>
+ 
+  <div id="step-options" class="hidden">
+    <div class="emoji">🎉</div>
+    <h2>Yes! Wat gaan we doen?</h2>
+    <p class="sub">kies iets, of verzin zelf iets</p>
+    <div class="options-grid" id="optionsGrid">
+      <button class="option-btn" data-choice="Lego bouw date"><span class="icon">🧱</span>Lego bouw date</button>
+      <button class="option-btn" data-choice="Bordspelletjes en drinks"><span class="icon">🎲</span>Bordspelletjes &amp; drinks</button>
+      <button class="option-btn" data-choice="Filmpje"><span class="icon">🎬</span>Filmpje</button>
+      <button class="option-btn" data-choice="Park, mensen bekijken"><span class="icon">🌳</span>Park, mensen kijken</button>
+      <button class="option-btn" data-choice="Bowlen"><span class="icon">🎳</span>Bowlen</button>
+      <button class="option-btn" data-choice="Minigolf"><span class="icon">⛳</span>Minigolf</button>
+      <button class="option-btn" id="customBtn" data-choice="__custom__" style="grid-column: 1 / -1;"><span class="icon">✏️</span>Iets anders...</button>
+    </div>
+    <div id="customBox" class="hidden">
+      <textarea id="customInput" placeholder="typ hier je eigen date-idee"></textarea>
+    </div>
+    <button class="primary-btn" id="confirmChoiceBtn" disabled>Bevestig keuze</button>
+  </div>
+ 
+  <div id="step-datetime" class="hidden">
+    <div class="emoji">🗓️</div>
+    <h2>Perfect, <span id="choiceEcho"></span></h2>
+    <p class="sub">wanneer spreken we af?</p>
+    <div class="datetime-row">
+      <input type="date" id="dateInput">
+      <input type="time" id="timeInput">
+    </div>
+    <p class="error hidden" id="datetimeError">kies een datum en tijd voor je verder gaat</p>
+    <button class="primary-btn" id="confirmDatetimeBtn">Plan het in</button>
+    <button class="ghost-btn" id="backToOptionsBtn">terug naar activiteiten</button>
+  </div>
+ 
+  <div id="step-send" class="hidden">
+    <div class="emoji">📮</div>
+    <h2>Alles staat klaar</h2>
+    <p class="sub" id="sendSummary"></p>
+    <button class="primary-btn" id="sendBtn">Stuur ons plannetje</button>
+    <p class="error hidden" id="sendError">hmm, dat lukte niet. probeer nog eens</p>
+  </div>
+ 
+  <div id="step-done" class="hidden">
+    <div class="emoji">💌</div>
+    <h1>Verstuurd!</h1>
+    <p class="sub">het zit onderweg. tot vanavond straks!</p>
+  </div>
+ 
+</div>
+ 
+<script>
+  emailjs.init({ publicKey: "iIbT2FJM5N25lJwMs" });
+ 
+  // ---- Step: yes / no ----
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const msg = document.getElementById('msg');
+  const buttons = document.getElementById('buttons');
+  let dodges = 0;
+ 
+  const jokes = [
+    "bruh whyyyyy, je houdt niet van mij",
+    "haha nice probeersel",
+    "mijn hart, gebroken",
+    "nee blijft nee, kies gewoon ja",
+    "je maakt het jezelf lastig hoor",
+    "de nee-knop bestaat niet meer voor jou",
+    "ik tel dit gewoon als een ja",
+    "oke dit wordt episch, blijf proberen",
+    "nee-knop heeft nu een eigen abonnement bij de sportschool"
+  ];
+ 
+  function moveNoButton() {
+    const boxWidth = buttons.clientWidth;
+    const boxHeight = buttons.clientHeight;
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
+ 
+    const yesRect = yesBtn.getBoundingClientRect();
+    const boxRect = buttons.getBoundingClientRect();
+    const yesLeft = yesRect.left - boxRect.left;
+    const yesTop = yesRect.top - boxRect.top;
+    const yesRight = yesLeft + yesRect.width;
+    const yesBottom = yesTop + yesRect.height;
+    const margin = 16;
+ 
+    let x, y, tries = 0;
+    do {
+      x = Math.random() * Math.max(boxWidth - btnW, 0);
+      y = Math.random() * Math.max(boxHeight - btnH, 0);
+      tries++;
+    } while (
+      tries < 30 &&
+      x < yesRight + margin &&
+      x + btnW > yesLeft - margin &&
+      y < yesBottom + margin &&
+      y + btnH > yesTop - margin
+    );
+ 
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+ 
+    dodges++;
+    msg.textContent = jokes[Math.min(dodges - 1, jokes.length - 1)];
+    yesBtn.style.transform = 'scale(' + Math.min(1 + dodges * 0.08, 1.6) + ')';
+  }
+ 
+  noBtn.addEventListener('mouseenter', moveNoButton);
+  noBtn.addEventListener('touchstart', function (e) { e.preventDefault(); moveNoButton(); });
+  noBtn.addEventListener('click', function (e) { e.preventDefault(); moveNoButton(); });
+ 
+  const stepAsk = document.getElementById('step-ask');
+  const stepOptions = document.getElementById('step-options');
+  const stepDatetime = document.getElementById('step-datetime');
+  const stepSend = document.getElementById('step-send');
+  const stepDone = document.getElementById('step-done');
+ 
+  yesBtn.addEventListener('click', function () {
+    stepAsk.classList.add('hidden');
+    stepOptions.classList.remove('hidden');
+  });
+ 
+  // ---- Step: activity options ----
+  let chosenActivity = null;
+  const optionButtons = document.querySelectorAll('.option-btn');
+  const customBtn = document.getElementById('customBtn');
+  const customBox = document.getElementById('customBox');
+  const customInput = document.getElementById('customInput');
+  const confirmChoiceBtn = document.getElementById('confirmChoiceBtn');
+ 
+  function selectOption(btn) {
+    optionButtons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    if (btn.dataset.choice === '__custom__') {
+      customBox.classList.remove('hidden');
+      chosenActivity = customInput.value.trim();
+    } else {
+      customBox.classList.add('hidden');
+      chosenActivity = btn.dataset.choice;
+    }
+    confirmChoiceBtn.disabled = !chosenActivity;
+  }
+ 
+  optionButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () { selectOption(btn); });
+  });
+ 
+  customInput.addEventListener('input', function () {
+    if (customBtn.classList.contains('selected')) {
+      chosenActivity = customInput.value.trim();
+      confirmChoiceBtn.disabled = !chosenActivity;
+    }
+  });
+ 
+  const choiceEcho = document.getElementById('choiceEcho');
+ 
+  confirmChoiceBtn.addEventListener('click', function () {
+    if (!chosenActivity) return;
+    choiceEcho.textContent = chosenActivity.toLowerCase();
+    stepOptions.classList.add('hidden');
+    stepDatetime.classList.remove('hidden');
+  });
+ 
+  // ---- Step: date & time ----
+  const dateInput = document.getElementById('dateInput');
+  const timeInput = document.getElementById('timeInput');
+  const datetimeError = document.getElementById('datetimeError');
+  const confirmDatetimeBtn = document.getElementById('confirmDatetimeBtn');
+  const backToOptionsBtn = document.getElementById('backToOptionsBtn');
+ 
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+ 
+  backToOptionsBtn.addEventListener('click', function () {
+    stepDatetime.classList.add('hidden');
+    stepOptions.classList.remove('hidden');
+  });
+ 
+  let chosenDate = null;
+  let chosenTime = null;
+  let formattedDatetime = null;
+ 
+  const sendSummary = document.getElementById('sendSummary');
+  const sendBtn = document.getElementById('sendBtn');
+  const sendError = document.getElementById('sendError');
+ 
+  confirmDatetimeBtn.addEventListener('click', function () {
+    if (!dateInput.value || !timeInput.value) {
+      datetimeError.classList.remove('hidden');
+      return;
+    }
+    datetimeError.classList.add('hidden');
+    chosenDate = dateInput.value;
+    chosenTime = timeInput.value;
+ 
+    const dateObj = new Date(chosenDate + 'T' + chosenTime);
+    formattedDatetime = dateObj.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) +
+      ' om ' + chosenTime;
+ 
+    sendSummary.textContent = chosenActivity + ' — ' + formattedDatetime;
+ 
+    stepDatetime.classList.add('hidden');
+    stepSend.classList.remove('hidden');
+  });
+ 
+  // ---- Step: send via EmailJS ----
+  sendBtn.addEventListener('click', function () {
+    sendError.classList.add('hidden');
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Versturen...';
+ 
+    emailjs.send('service_z7c0sjg', 'template_je6i5sl', {
+      activity: chosenActivity,
+      datetime: formattedDatetime,
+      sender_name: 'je lief'
+    }).then(function () {
+      stepSend.classList.add('hidden');
+      stepDone.classList.remove('hidden');
+    }).catch(function () {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Stuur ons plannetje';
+      sendError.classList.remove('hidden');
+    });
+  });
+</script>
+ 
+</body>
+</html>
+ 
